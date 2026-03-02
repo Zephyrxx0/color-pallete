@@ -1,24 +1,48 @@
-import {  Plugin } from "obsidian";
-import "assets/add-square.svg";
+import { Plugin} from 'obsidian';
+import { ExampleView, VIEW_TYPE_EXAMPLE } from './view/example';
 
-export default class palette extends Plugin {
+export default class ExamplePlugin extends Plugin {
+  async onload() {
+    this.registerView(
+      VIEW_TYPE_EXAMPLE,
+      (leaf) => new ExampleView(leaf)
+    );
 
-  mainCard : HTMLDivElement;
-  addButton : HTMLButtonElement;
+    this.addRibbonIcon("dice", 'Activate view', () => {
+      this.activateView();
+    });
+  }
 
-  onload() {
-    document.body.style.display = "flex";
-    document.body.style.flexDirection = "column";
-    document.body.style.alignItems = "center";
-    document.body.style.justifyContent = "center";
+  async onunload() {
+  }
 
-    this.mainCard = document.body.createDiv("mainCard");
-    this.mainCard.setAttr("style", "width: 300px; height: 200px; background-color: white; border: 1px solid black;");
-    this.mainCard.setText("Hello, Obsidian!");
+  async activateView() {
+    const { workspace } = this.app;
 
-    const addButton = this.mainCard.createEl("button", { cls: "add-button" });
-    // this.addButton.createSvg();
+    const leaves = workspace.getLeavesOfType(VIEW_TYPE_EXAMPLE);
 
-    // this.mainCard.hide();
+    if (leaves.length > 0) {
+      // A leaf with our view already exists, use that
+      const leaf = leaves[0];
+      // "Reveal" the leaf in case it is in a collapsed sidebar
+      workspace.revealLeaf(leaf);
+      return;
+    }
+
+    // Our view could not be found in the workspace, create a new leaf
+    // in the right sidebar for it
+    let newLeaf = workspace.getRightLeaf(false);
+    if (!newLeaf) {
+      // Ensure a leaf exists by creating one if necessary
+      newLeaf = workspace.getRightLeaf(true);
+    }
+    if (!newLeaf) {
+      // Could not obtain a leaf, abort activation
+      return;
+    }
+    await newLeaf.setViewState({ type: VIEW_TYPE_EXAMPLE, active: true });
+
+    // "Reveal" the leaf in case it is in a collapsed sidebar
+    workspace.revealLeaf(newLeaf);
   }
 }
