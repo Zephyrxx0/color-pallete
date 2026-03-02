@@ -3,3 +3,158 @@
     width: 100px;
     background-color: aqua;
 }
+
+.palette-vault-container {
+  padding: 1rem;
+}
+
+.palette-vault-header {
+  margin-bottom: 1rem;
+}
+
+.palette-vault-toolbar {
+  margin-bottom: 1rem;
+}
+
+.palette-vault-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.palette-card {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: var(--background-secondary);
+  box-shadow: var(--shadow-s);
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.palette-card:hover {
+  border-color: var(--interactive-accent);
+  box-shadow: var(--shadow-l);
+}
+
+.palette-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.palette-card-header h3 {
+  margin: 0;
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.palette-card-menu {
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.2s, background-color 0.2s;
+  font-size: 1.2rem;
+  line-height: 1;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.palette-card:hover .palette-card-menu {
+  opacity: 1;
+}
+
+.palette-card-menu:hover {
+  background-color: var(--background-modifier-hover);
+}
+
+.color-blocks {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.color-block {
+  width: 60px;
+  height: 60px;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--background-modifier-border);
+  transition: border-color 0.2s, transform 0.1s;
+}
+
+.color-block:hover {
+  border-color: var(--interactive-accent);
+  transform: scale(1.05);
+}
+
+.color-value {
+  position: absolute;
+  bottom: -1.5rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  background: var(--background-primary);
+  padding: 0 0.25rem;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.palette-vault-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+}
+
+/* Improved mobile touch targets */
+@media (max-width: 768px) {
+  .palette-vault-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .palette-card {
+    padding: 0.75rem;
+  }
+
+  .color-block {
+    width: 50px;
+    height: 50px;
+  }
+
+  .palette-card-menu {
+    min-width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Better loading states */
+.palette-card.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Focus states for accessibility */
+.palette-card:focus-within {
+  border-color: var(--interactive-accent);
+  outline: 2px solid var(--interactive-accent);
+}
+
+.color-block:focus {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 2px;
+}
